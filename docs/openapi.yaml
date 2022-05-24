@@ -1,1 +1,252 @@
-
+openapi: 3.0.3
+info:
+  title: FastAPI
+  version: 1.0.0
+servers:
+  - url: test.com
+paths:
+  /v1/note/funny:
+    post:
+      summary: Funny Note
+      operationId: funny_note_v1_note_funny_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+  /v1/note:
+    get:
+      summary: Get All
+      operationId: get_all_v1_note_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All V1 Note Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+    post:
+      summary: Insert
+      operationId: insert_v1_note_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InsertNote'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      summary: Delete All
+      operationId: delete_all_v1_note_delete
+      responses:
+        '204':
+          description: Successful Response
+  '/v1/note/{id_}':
+    get:
+      summary: Get
+      operationId: get_v1_note__id___get
+      parameters:
+        - required: true
+          schema:
+            title: 'Id '
+            type: integer
+          name: id_
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      summary: Update
+      operationId: update_v1_note__id___put
+      parameters:
+        - required: true
+          schema:
+            title: 'Id '
+            type: integer
+          name: id_
+          in: path
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateNote'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Note'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      summary: Delete
+      operationId: delete_v1_note__id___delete
+      parameters:
+        - required: true
+          schema:
+            title: 'Id '
+            type: integer
+          name: id_
+          in: path
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  '/v1/note/tag/{tag}':
+    get:
+      summary: Get By Tag
+      operationId: get_by_tag_v1_note_tag__tag__get
+      parameters:
+        - required: true
+          schema:
+            title: Tag
+            type: string
+          name: tag
+          in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get By Tag V1 Note Tag  Tag  Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Note'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /v1/tags:
+    get:
+      summary: Get All Tags
+      operationId: get_all_tags_v1_tags_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get All Tags V1 Tags Get
+                type: array
+                items:
+                  type: string
+components:
+  schemas:
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    InsertNote:
+      title: InsertNote
+      required:
+        - content
+        - tags
+      type: object
+      properties:
+        content:
+          title: Content
+          type: string
+        tags:
+          title: Tags
+          type: array
+          items:
+            type: string
+    Note:
+      title: Note
+      required:
+        - id
+        - content
+        - tags
+      type: object
+      properties:
+        id:
+          title: Id
+          type: integer
+        content:
+          title: Content
+          type: string
+        tags:
+          title: Tags
+          type: array
+          items:
+            type: string
+    UpdateNote:
+      title: UpdateNote
+      required:
+        - content
+        - tags
+      type: object
+      properties:
+        content:
+          title: Content
+          type: string
+        tags:
+          title: Tags
+          type: array
+          items:
+            type: string
+    ValidationError:
+      title: ValidationError
+      required:
+        - loc
+        - msg
+        - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            type: string
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
