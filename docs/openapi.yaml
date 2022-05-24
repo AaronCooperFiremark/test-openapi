@@ -5,6 +5,20 @@ info:
 servers:
   - url: test.com
 paths:
+  /v2/future:
+    get:
+      summary: From the future!
+      operationId: v2_future
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                properties:
+                  test:
+                    description: Test from the future
+                    type: string
   /v1/note/funny:
     post:
       summary: Funny Note
